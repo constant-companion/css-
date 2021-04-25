@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        border: 10px solid hsla(0, 0%, 100%, .5);
+        background: white;
+        background-clip: padding-box;
+        width: 400px;
+        height: 400px;
+        margin: auto;
+    }
+</style>
+
+<body>
+    <!-- 当我们想给一个容器设置一层白色背景和一道半透明白色边框，默认情况下，背景会延伸到边框所在的区域下层。并不是让body的背景从半透明白色边框处透上来，而是在半透明白色边框处透出了这个容器自己的纯白色背景，这实际上得到的效果和纯白实色的边框看起来一样。
+        现在我们可以通过background-clip 属性调整  默认值 border-box  意味着背景会被元素的boder box（边框的外边沿） 裁剪掉
+        如果不想背景侵入边框的范围，可以把它的值设为padding-box 这样浏览器就会用内边距的外边沿来吧背景裁剪。
+    -->
+    <div>
+        semitransparent borders
+    </div>
+</body>
+
+</html>

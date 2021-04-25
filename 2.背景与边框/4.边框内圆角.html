@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .two {
+        max-width: 10em;
+        background: #655;
+        padding: .8em;
+    }
+
+    .two>div {
+        background: tan;
+        border-radius: .8em;
+        padding: 1em;
+    }
+
+    .one {
+        max-width: 10em;
+        background: tan;
+        padding: 1em;
+        border-radius: .8em;
+        box-shadow: 0 0 0 .6em #655;
+        outline: .6em solid #655;
+    }
+</style>
+
+<body>
+    <!-- 
+        有时我们需要一个容器，只在内侧有圆角，而边框或描边的四个角在外部仍然保持直角的形状
+        1.用两个元素实现这个效果
+     -->
+    <div class="two">
+        <div>
+
+        </div>
+    </div>
+
+    <!--
+         2.只用一个元素达成相同的效果
+     -->
+
+    <div class="one">
+
+    </div>
+    <!--
+        注意事项：描边并不会跟着元素的周角走，但box-shadow，因此实现了这个效果。
+        如果把这两者叠加到一起，box-shadow会刚好填补描边和容器圆角直接的空白
+        请注意：我们为box-shadow属性指定的扩张值，并不一定等于描边的宽度，我们只需要指定一个足够填补空隙的宽度就够了
+        我们可以直接使用圆角半径的一半2
+
+        扩张半径需要比描边的宽度小，但它又要比 (根号2-1)r 大，r表示border-radius 因此描边的宽度不能比(根号2-1)r小
+     -->
+</body>
+
+</html>

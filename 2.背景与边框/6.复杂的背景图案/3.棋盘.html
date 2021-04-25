@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        width: 400px;
+        height: 200px;
+        margin: 1em;
+    }
+
+    /* 直角三角形 */
+    .rightTriangle {
+        background: #eee;
+        background-image: linear-gradient(45deg, #bbb 50%, transparent 0);
+        background-size: 30px 30px;
+    }
+
+    /* 直角三角形四周会有很多空隙 */
+    .rightTriangle2 {
+        background: #eee;
+        background-image: linear-gradient(45deg, #bbb 25%, transparent 0);
+        background-size: 30px 30px;
+    }
+
+    /* 反转 */
+    .rightTriangle3 {
+        background: #eee;
+        background-image: linear-gradient(45deg, transparent 75%, #bbb 0);
+        background-size: 30px 30px;
+    }
+
+    /* 反转前后组合在一起 */
+    .rightTriangle4 {
+        background: #eee;
+        background-image:
+            linear-gradient(45deg, transparent 75%, #bbb 0),
+            linear-gradient(45deg, #bbb 25%, transparent 0);
+        background-size: 30px 30px;
+    }
+
+    /* 拼合成完整的方块 */
+    .rightTriangle5 {
+        background: #eee;
+        background-image:
+            linear-gradient(45deg, transparent 75%, #bbb 0),
+            linear-gradient(45deg, #bbb 25%, transparent 0);
+        background-position: 0 0, 15px 15px;
+        background-size: 30px 30px;
+    }
+
+    /* 棋盘 */
+    .chessboard {
+        background: #eee;
+        background-image:
+            linear-gradient(45deg, transparent 75%, #bbb 0),
+            linear-gradient(45deg, #bbb 25%, transparent 0), linear-gradient(45deg, transparent 75%, #bbb 0),
+            linear-gradient(45deg, #bbb 25%, transparent 0);
+        background-position: 0 0, 15px 15px, 15px 15px, 30px 30px;
+        background-size: 30px 30px;
+    }
+
+    /* 改进后的棋盘 */
+    .chessboard2 {
+        background: #eee;
+        background-image:
+            linear-gradient(45deg,
+                rgba(0, 0, 0, .25) 25%, transparent 0,
+                transparent 75%, rgba(0, 0, 0, .25) 0),
+            linear-gradient(45deg,
+                rgba(0, 0, 0, .25) 25%, transparent 0,
+                transparent 75%, rgba(0, 0, 0, .25) 0);
+        background-position: 0 0, 15px 15px;
+        background-size: 30px 30px;
+    }
+
+    /* 角向渐变生成贴片 */
+    .chessboard3 {
+        /* background: repeating-conic-gradient(#bbb 0, #bbb 25%, #eee 0, #eee 50%); */
+        background: repeating-conic-gradient(#bbb 0 25%, #eee 0 50%);
+        background-size: 30px 30px;
+    }
+</style>
+
+<body>
+    <!-- 
+        棋盘图案可以通过平铺生成，如果创建两个不同背景定位的方块，每个方块的周围是不会有空隙的，因此最终结果就是一片实色。总的来说，只用一层css渐变无法创建四周有空隙的方块。
+        我们可以用两个直角三角形来拼合出我们想要的方块
+        如果我们直接用两个三角形组合正方形，可能只会得到一片实色。但是如果我们把直接边缩短到原来的一半，从而只占据贴片面积的1/8，我们只需要简单的把色标的位置值从原来的50%改为25%,直角三角形四周会有很多空隙
+        如果我们把色标的顺序反转，就可以创建相反方向的三角形
+
+        如果把他们组合在一起,这样的效果并不是我们想要的，但是我们只需要把第二层渐变在水平和垂直方向均移动贴片长度的一半，就可以把它们拼合成一个完整的方块
+
+        这就是棋盘的一半，要把它转变成为一幅完整的棋盘，我们只需要把现有的这一组渐变重复一份，从而创建出另一组正方形，并且偏移它们的定位。最终结果就是一幅棋盘图案。
+
+        这段代码还可以稍微优化，比如我们可以把这些处在贴片顶角的三角形两两组合起来  即把第一组和第二组合并成一层渐变，把第三组和第四组合并成一层渐变 然后可以把深灰色改成半透明的黑色，这样我们就只需要修改底色就可以改变整个棋盘的色调，不需要再单独调整各层渐变的色标了
+
+        现在我们把四层渐变转换成了两层渐变，但代码仍然和以前一样WET DRY不友好  为了改变棋盘的主色调或者方格的尺寸，还是需要修改四个地方。
+        可以使用预处理器,也比较麻烦，这时候最好使用SVG来实现。
+
+        现在应该已经有了角向渐变 也称为圆锥渐变 不需要拼合三角形了。 所有色标的颜色变化是一条射线绕着端点旋转来推进的。
+        可以创建色轮，放射性的光芒，金属拉丝效果，棋盘图案，以及等等效果。
+        角向渐变生成
+     -->
+
+    <div class="rightTriangle"></div>
+    <div class="rightTriangle2"></div>
+    <div class="rightTriangle3"></div>
+    <div class="rightTriangle4"></div>
+    <div class="rightTriangle5"></div>
+    <div class="rightTriangle5"></div>
+    <div class="chessboard"></div>
+    <div class="chessboard2"></div>
+    <div class="chessboard3"></div>
+
+</body>
+
+</html>

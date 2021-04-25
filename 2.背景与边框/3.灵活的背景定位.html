@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* background-position的扩展语法 */
+    div {
+        height: 400px;
+        width: 400px;
+        background: url(../dog.gif) no-repeat #58a;
+        /* background: url(../dog/gif no-repeat bottom right #58a)  回退方案 避免不支持bg-p扩展语法的浏览器 */
+        background-position: right 20px bottom 10px
+    }
+
+    /* background-origin方案 */
+    .bo {
+        /* height: 400px; 
+        width: 500px; */
+        padding: 10px;
+        background: url("../dog.gif") no-repeat #58a;
+        background-origin: content-box;
+    }
+
+    /* calc() 方案 */
+    .calc {
+        background: url("../dog.gif") no-repeat #58a;
+        background-position: calc(100% - 20px) calc(100% - 10px)
+    }
+</style>
+
+<body>
+    <!-- 
+        很多时候，我们想针对容器的某个角对背景图片做偏移定位  希望图片和容器的边角之间能留出一定的空隙，类似内边距效果。
+        当元素容器尺寸不固定时，就不好做到了。
+        1.background-position 的扩展语法方案 
+        允许我们制定背景图片距离任意角的偏移量，只要我们在偏移量前面指定关键字
+        如果想让背景图片跟右边缘保持20px的偏移量，同时跟底边保持10px的偏移量
+
+        2、background-origin方案
+        给背景图片设置巨鹿某个角的偏移量时，有一种情况极为常见： 偏移量与容器的内边距一致。如果采用上面提到的background-position方案
+        代码会是这样
+        padding: 10px
+        background: url() no-repeat #58a
+        background-position: right 10px bottom 10px
+        代码不够dry 每次改动内边距的值，都需要在三个地方更新这个值。我们可以让它自动地跟着我们设定的内边距走，不用另外声明偏移量的值
+        默认情况下 background-position: top left  是以padding box 为准的，这样边框才不会遮住背景图片
+        background-origin 可以改变这种行为，如果我们把它改成content-box  我们在background-position属性中使用的边角关键字将会以内容区的边缘作为基准（也就是说，此时背景图片距离边角的偏移量就跟内边距保持一致了）
+        如果想让偏移量与内边距稍微有些不同，可以在使用background-origin:content-box的同时，再通过background-position 的扩展语法来设置这些额外的偏移量
+
+        3.calc() 方案
+        calc()函数允许我们执行此类运算 水平100% -20px 偏移量 以及 100%-10px 的垂直偏移量
+        calc() 函数内部的-和+ 运算符的两侧各加一个空白符，否则会产生解析错误
+     -->
+    <div>
+
+    </div>
+
+    <div class="bo">
+
+    </div>
+
+    <div class="calc">
+
+    </div>
+</body>
+
+</html>

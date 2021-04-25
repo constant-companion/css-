@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        width: 400px;
+        height: 200px;
+        background: hsl(20, 40%, 90%);
+        background-image:
+            linear-gradient(90deg, #fb3 11px, transparent 0),
+            linear-gradient(90deg, #ab4 23px, transparent 0),
+            linear-gradient(90deg, #655 41px, transparent 0);
+        background-size: 41px 100%, 61px 100%, 83px 100%;
+    }
+</style>
+
+<body>
+    <!-- 
+        重现大自然的随机性  自然界的事物都不是以无限平铺的方式存在的，即使重复，也伴随着多样性和随机性
+        直接创建一个具有四种颜色的条纹图案，重复规律明显。
+        我们可以把这组条纹从一个平面拆散成多个图层：一种颜色作为底色，另三种颜色作为条纹，然后再让条纹以不同的间隔进行重复平铺，这样的结果更随机。各层背景图像以不同的间距重复数次后再次同意对齐。
+        为了让这种随机性更真实，蝉原则。
+
+
+        蝉原则： 通过质数来增加随机真实性的想法  不仅适用于背景，还可以用于其他涉及有规律重复的情况
+        在照片图库中，为每副图片应用细微的伪随机旋转效果时，可以使用多个 :nth-child(a) 选择符，让a是质数
+        如果要生成一个动画，而且想让它看起来不是按照明显的规律在循环时，我们可以应用多个时长为质数的动画
+     -->
+    <div>
+
+    </div>
+</body>
+
+</html>

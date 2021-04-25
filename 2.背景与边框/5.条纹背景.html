@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div {
+            max-width: 20em;
+            height: 10em;
+            margin: 2em;
+        }
+
+        /* 一条基本的垂直渐变线 */
+        .one {
+            background: linear-gradient(#fb3, #58a);
+        }
+
+        /* 把这两个色标拉近  现在容器顶部的20%区域被填充为#fb3实色 而底部20%区域填充为#58a实色 真正的渐变只出现在容器60%高度区域*/
+        .two {
+            background: linear-gradient(#fb3 20%, #58a 80%);
+        }
+
+        /* 继续拉近两个色标，那真正的渐变区域就更窄了 */
+        .three {
+            background: linear-gradient(#fb3 40%, #58a 60%);
+        }
+
+        /* 如果我们把两个色标重合  已经没有任何渐变效果了，只有两块实色各占据一半*/
+        .four {
+            background: linear-gradient(#fb3 50%, #58a 50%);
+        }
+
+        /* 因为渐变是一种由代码生成的图像，我们能像对待其他任何背景图像那样对待它，还可以通过background-size来调整其尺寸
+        缩短条纹的高度，默认情况下是重复平铺的，填满整个容器
+         */
+        .five {
+            background: linear-gradient(#fb3 50%, #58a 50%);
+            background-size: 100% 30px
+        }
+
+        /* 我们可以用相同的方法来创建不等宽的条纹  只需调整色标即可*/
+        .six {
+            background: linear-gradient(#fb3 30%, #58a 30%);
+            background-size: 100% 30px;
+        }
+
+        /* 更DRY */
+        .seven {
+            background: linear-gradient(#fb3 30%, #58a 0);
+            background-size: 100% 30px;
+        }
+
+        /* 创建超过两种颜色的条纹 */
+        .eight {
+            background: linear-gradient(#fb3 33.3%,
+                    #58a 0, #58a 66.6%, yellowgreen 0);
+            background-size: 100% 45px;
+        }
+
+        /* 斜向条纹  */
+        .nine {
+            background: repeating-linear-gradient(45deg, #fb3, #58a 30px)
+                /* 
+            效果相当于 45deg,
+            #fb3, #58a 30px,
+            #fb3 30px, #58a 60px,
+            #fb3 60px, #58a 90px ......
+             */
+        }
+
+        /* 45度斜向条纹 */
+        .ten {
+            background: repeating-linear-gradient(45deg,
+                    #fb3, #fb3 15px, #58a 0, #58a 30px)
+        }
+
+        /* 60°斜向条纹 */
+        .eleven {
+            background: repeating-linear-gradient(60deg,
+                    #fb3, #fb3 15px, #58a 0, #58a 30px)
+        }
+
+        /* 两种方法结合的45°条纹 */
+        .twelve {
+            background: repeating-linear-gradient(45deg,
+                    #fb3 0, #fb3 25%, #58a 0, #58a 50%);
+            background-size: 42px 42px;
+
+        }
+
+        /* 灵活的同色系条纹 */
+        .thirteen {
+            background: #58a;
+            background-image: repeating-linear-gradient(30deg,
+                    hsla(0, 0%, 100%, .1),
+                    hsla(0, 0%, 100%, .1) 15px,
+                    transparent 0, transparent 30px)
+        }
+
+        /* 新增的简写方法 */
+        .fourteen {
+            background: repeating-linear-gradient(60deg, #fb3 0 15px, #58a 0 30px)
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        css线性渐变 background-size
+        直接在css中创建条纹图案 
+
+        如果多个色标具有相同的位置，它们会产生一个无限小的过渡区域，过渡的起止色分别是第一个和最后一个指定值。从效果上看，颜色会在那个位置突然起变化，而不是一个平滑的渐变过程
+
+        如果某个色标的位置值比整个列表中在它之前的色标的位置值都要小，则该色标的位置值会被设置为它前面所有色标的位置值的最大值
+        如果我们把第二个色标的位置值设置为0，那它的位置就总是会被浏览器调整 为前一个色标的位置值，代码会更加DRY
+
+        垂直条纹 代码和水平条纹几乎一样，差别在于需要在开头加上一个额外的参数来指定渐变的方向  这个参数默认是水平省略
+        然后我们需要把background-size的值颠倒
+        background: linear-gradient(to right/90deg, #fb3 50%. #58a 0)
+        background-size: 30px 100%
+
+        斜向条纹 linear-gradient()和 radial-gradient() 各还有一个循环式的加强版  radial-gradient() 渐变的圆或者椭圆
+        repeating-linear-gradient() 和 repeating-radial-gradient() 
+        它们的工作方式和前两者类似，只有一点不同，色标是无限循环重复的，直到填满整个背景
+        重复线性渐变完美适用于条纹效果  一个渐变图案就可以自动重复并铺满整个背景
+
+        第一个好处是减少了重复  另一个 我们现在是在渐变的色标中指定长度，而不是原来的background-size 这里的background-size是初始值，对渐变来说就是以整个元素的范围进行填充 这意味着代码的长度值更加直观，因为这些长度是直接在渐变轴上进行度量的，直接代表了条纹自身的宽度
+        最大的好处在于我们可以随心所欲的改变渐变的角度了
+
+        这个方法不论条纹的角度如何，我们在创建双色条纹时都需要用到四个色标 这意味着我们最好用前面的方法来实现水平或者垂直的条纹，而这种方法实现斜向条纹
+        处理45度条纹，我们甚至可以把这两种方法结合起来  本质上是通过重复线性渐变来简化代码
+
+        灵活的同色系条纹
+        大多数情况下，我们想要的条纹图案并不是由差异极大的几种颜色组成的，这些颜色 往往属于同一色系，只是在明度方面有着轻微的差异
+        这种情况下，如果用以前的方法，两种颜色之间的关系在代码中并没有体现出来，如果我们想要改变这个条纹的主色调，甚至需要改变四处
+
+        我们可以不再为每种条纹单独指定颜色，而是把最深的颜色指定为背景色，同时把半透明的白色的条纹叠加在背景色之上来得到浅色条纹，现在只需要修改一处就可改变所有颜色了  通过叠加的手法，具有透明区域的多个渐变图案可以构造出非常复杂的图案
+
+        包含两个位置信息的色标 简化语法 在同一色标上指定两个位置值
+        代码更加简洁而且更加DRY
+     -->
+    <div class="one">
+
+    </div>
+    <div class="two">
+
+    </div>
+    <div class="three">
+
+    </div>
+    <div class="four">
+
+    </div>
+    <div class="five">
+
+    </div>
+    <div class="six">
+
+    </div>
+    <div class="seven">
+
+    </div>
+
+    <div class="eight">
+
+    </div>
+    <div class="nine">
+
+    </div>
+    <div class="ten">
+
+    </div>
+    <div class="eleven">
+
+    </div>
+    <div class="twelve">
+
+    </div>
+    <div class="thirteen">
+
+    </div>
+    <div class="fourteen">
+
+    </div>
+</body>
+
+</html>

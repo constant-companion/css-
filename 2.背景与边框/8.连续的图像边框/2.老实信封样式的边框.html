@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        margin: 1em;
+        width: 400px;
+        height: 200px;
+        padding: 1em;
+        border: 1em solid transparent;
+        background: linear-gradient(white, white) padding-box,
+            repeating-linear-gradient(-45deg,
+                red 0 12.5%,
+                transparent 0 25%,
+                #58a 0 37.5%,
+                transparent 0 50%) 0 / 5em 5em;
+    }
+
+    /* 通过border-image 实现 */
+    .two {
+        border-image: 16 repeating-linear-gradient(-45deg,
+                red 0, red 1em,
+                transparent 0 2em,
+                #58a 0 3em,
+                transparent 0 4em);
+    }
+
+    /* 生成好玩的蚂蚁行军边框  虚线边框，看起来在不断转到，就好像排队前进的蚂蚁一样*/
+
+    @keyframes ants {
+        to {
+            background-position: 100%
+        }
+    }
+
+    .marching-ants {
+        padding: 1em;
+        border: 1px solid transparent;
+        background:
+            linear-gradient(white, white) padding-box,
+            repeating-linear-gradient(-45deg,
+                black 0 25%, white 0 50%) 0 / .6em .6em;
+        animation: ants 12s linear infinite;
+    }
+
+    /* 顶部边框被裁剪的效果 */
+    .four {
+        border-top: .2em solid transparent;
+        border-image: 100% 0 0 linear-gradient(90deg,
+                currentColor 4em,
+                transparent 0);
+        padding-top: 1em;
+    }
+</style>
+
+<body>
+    <!-- 
+        这个技巧还可以用在渐变图案上，比如生成一种老式信封样式的边框。
+        可以通过border属性来改变边框的厚度  background-size属性来改变条纹的宽度
+
+        通过border-image 方法注意问题： 1.每当我们改变border0image-slice时，都需要同时修改border-width来让他们相互匹配
+        2.border-image-slice中不能使用em单位，只能把边框厚度指定为像素单位
+        3.条纹的宽度需要在色标的位置信息中写好，因此我们在改变条纹宽度时，需要修改四处。
+
+        生成蚂蚁行军效果
+        这个技巧还可以创建出各种特殊样式的虚线框，不管是为虚线段指定不同的颜色，还是自定义线段的长度和间隙的长度 
+
+        顶部边框被裁剪的效果 脚注   通过border-image 再加上一条由渐变生成的垂直条纹，并把要裁剪的长度在渐变中写好。边框线的粗细交给Border-width来控制
+     -->
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="marching-ants"></div>
+    <div class="four"></div>
+</body>
+
+</html>

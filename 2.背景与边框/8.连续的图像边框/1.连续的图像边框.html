@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        width: 400px;
+        height: 200px;
+        padding: 1em;
+        border: 1em solid transparent;
+        background: linear-gradient(white, white),
+            url(../dog.gif);
+        background-size: cover;
+        background-clip: padding-box, border-box;
+    }
+
+    /* background-origiin: 默认padding-box  图片的尺寸不仅取决于padding box的尺寸，而且被放置在了padding box的原点，我们实际上看到的是背景图片以平铺的方式蔓延到border box区域的效果
+解决这个问题，需要设置如下 */
+    .two {
+        background-origin: border-box;
+    }
+
+    /* 简写 */
+    .three {
+        background:
+            linear-gradient(white, white) padding-box,
+            url(../dog.gif) border-box 0 / cover;
+    }
+</style>
+
+<body>
+    <!-- 
+        有时候我们想把一幅图案或图片应用为边框，而不是背景。我们还希望这个元素的尺寸在扩大或缩小时，这幅图片都可以自动延伸并覆盖完整的边框区域。
+        css渐变和背景 在背景图片之上，再叠加移除纯白的实色背景。为了让下层的背景图片透过边框区域显示出来，我们要给两层背景指定不同的
+        background-clip 值。最后一个要点在于，我们只能在多重背景的最底层设置背景色，因此需要用一道从白色过渡到白色的css渐变来模拟出纯白实色背景的效果。
+     -->
+</body>
+<div class="one"></div>
+<div class="two"></div>
+<div class="three"></div>
+
+</html>

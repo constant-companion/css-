@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        width: 400px;
+        height: 200px;
+        margin: 10px;
+    }
+
+    /* 网格 */
+    .grid {
+        background: white;
+        background-image: linear-gradient(90deg,
+                rgba(200, 0, 0, .5) 50%, transparent 0),
+            linear-gradient(rgba(200, 0, 0, .5) 50%, transparent 0);
+        background-size: 30px 30px;
+    }
+
+    /* 展示了使用长度而不是百分比作为色标   希望网格中每个格子的大小可以调整  我们得到的就是一幅用1px白线画出来的30px大小的网格图案*/
+    .grid2 {
+        background: #58a;
+        background-image:
+            linear-gradient(white 1px, transparent 0),
+            linear-gradient(90deg, white 1px, transparent 0);
+        background-size: 30px 30px;
+    }
+
+    .grid3 {
+        background: #58a;
+        background-image:
+            linear-gradient(white 2px, transparent 0),
+            linear-gradient(90deg, white 2px, transparent 0),
+            linear-gradient(hsla(0, 0%, 100%, .3) 1px, transparent 0),
+            linear-gradient(90deg, hsla(0, 0%, 100%, .3) 1px, transparent 0);
+        background-size: 75px 75px, 75px 75px, 75px 75px, 15px 15px;
+    }
+</style>
+
+<body>
+    <!-- 
+        用css渐变来创建任何种类的几何图案几乎都是可能的
+        有时不太实际 会弄出一大堆无法维护的代码
+        css图案值得使用css预处理器来减少代码冗余  最终图案越复杂，相应的代码就会变得越来越不DRY
+
+        当我们把多个渐变图案组合起来，让他们透过彼此的透明区域呈现时，首先把水平和垂直的条纹叠加起来，从而得到各种样式的网格
+
+        在某些情况下，我们希望网格中每个格子的大小可以调整，而网格线条的粗细同时保持固定。使用长度而不是百分比作为色标
+        我们得到的就是一幅用1px白线画出来的30px大小的网格图案
+
+        
+     -->
+
+    <div class="grid">
+
+    </div>
+
+    <div class="grid2">
+        我们得到的就是一幅用1px白线画出来的30px大小的网格图案
+    </div>
+
+    <div class="grid3">
+        把两幅不同线宽，不同颜色的网格图案叠加起来的，得道一个更加逼真的蓝图网格
+    </div>
+</body>
+
+</html>

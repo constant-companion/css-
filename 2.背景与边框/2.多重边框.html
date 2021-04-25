@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    div {
+        width: 400px;
+        height: 400px;
+        margin: auto;
+
+    }
+
+    .shadow {
+        background: yellowgreen;
+        box-shadow: 0 0 0 10px #655,
+            0 0 0 15px deeppink,
+            0 2px 5px 15px rgba(0, 0, 0, .6)
+    }
+
+    .outline {
+        background: yellowgreen;
+        border: 10px solid #655;
+        outline: 5px solid deeppink;
+    }
+</style>
+
+<body>
+    <!-- 
+        box-shadow方案
+        第四个参数（扩张半经），通过指定正值或负值，可以让投影面积加大或者减少。一个正值的扩张半径加上两个为0的偏移量以及为0的模糊值，得到的投影其实就像一道实线边框
+        box-shadow支持逗号分隔语法，我们可以创建任意数量的投影，是层层叠加的，第一层投影位于最顶层。因此需要按照此规律调整扩张半径。还可以在这些边框底下再加一层常规的投影
+
+        注意： 投影的行为跟边框不完全一致，因为它不会影响布局，也不会受box-sizing属性的影响。可以通过内边距或外边距来额外模拟出边框所需要占据的空间
+        以上方法所创建出的假边框出现的元素的外圈，不会影响鼠标事件  如果需要的话需要给box-shadow属性加上inset关键字 来使投影绘制在元素的内圈
+        此时需要增加额外的内边距来腾出足够的空隙
+     -->
+    <div class="shadow">
+        box-shadow方法
+    </div>
+
+    <!-- 
+        outline 方案 
+        在某些情况下，你可能只需要两层边框，那就可以先设置一层常规边框，在加上outline（描边）属性来产生外层的边框。这种方法的一大优点在于边框样式十分灵活，不像上面的box-shadow方案只能模拟实线边框
+        描边的另一个好处在于可以通过Outline-offset属性来控制它跟元素边缘之间的间距，这个属性甚至可以接受负值。对于某些效果，例如缝边来说很有用
+
+        注意事项： 值使用于双层边框的场景
+        边框不一定会贴合border-radius属性产生的圆角（可能已经修复）
+
+     -->
+    <div class="outline">
+        outling方法
+    </div>
+</body>
+
+</html>
