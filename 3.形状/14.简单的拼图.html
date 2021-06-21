@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+        拼图很普遍
+        实现方案
+        基于transform的解决方案
+            这个方案是在结构层面的最佳选择，只需要一个元素做容器，而其他部分由伪元素，变形属性和css渐变实现。
+            先从一个简单的元素开始 <div class = "pie"></div>
+            假如需要一个最简单的拼图，其展示的比率是固定的20%，首先把这个元素设置为一个圆形，以它作为背景
+            .pie {
+                width: 100px; height: 100px;
+                border-radius: 50%;
+                background: yellow;
+            }
+            我们将采用棕色#655来显示比率。我们可以把圆形的左右两部分指定为上述两种颜色，然后用伪元素覆盖上去，通过旋转决定露出多大的扇区。
+            为了把圆形的右半部分设置为棕色，用一个简单的线性渐变
+            background-image: linear-gradient(to right, transparent 50%, #655 0);
+            然后设置伪元素起到遮盖作用
+            .pie::before {
+                content: '';
+                display:block;
+                margin-left: 50%;
+                height: 100%;
+            }
+            我们的伪元素现在相对于整个拼图进行了重叠，不过还没设置任何样式，还起不到遮盖作用。
+            我们希望它能遮盖圆形中的棕色部分，因此应该给它指定黄色背景。在这里使用background-color: inherit 可以避免代码的重复，因为背景色与宿主元素保持一致
+            我们希望它是绕着圆形的圆心来选择的，对它自己来说，这个点就是它左边缘的中心点。因此，我们把它的transformm-origin设置为left/0 50%
+            我们不希望它呈现出矩形的形状，否则它突破整个拼图的圆形范围。因此设置overflow:hidden,或者给这个伪元素指定合适的border-radius属性来把它变成一个半圆
+            因此这个伪元素
+            .pie::before {
+                content: '';
+                display:block;
+                margin-left: 50%;
+                height: 100%;
+                border-radius: 0 100% 100% 0/ 50%;
+                background-color: inherit;
+                transform-origin: left;
+            }
+            接下来，我们可以通过一个rotate()属性来让这个伪元素转起来，如果我们要显示出20%的比率，可以指定选择的值为72deg/,2turn
+            显示0-50%时运行良好，但是超过50%时会出问题
+            50%-100%我们可以使用上述技巧的一个反向版本来实现这个范围内的比率：设置一个伪元素，让它在0至.5turn的范围内旋转
+            因此要得到一个60%比率的拼图
+            transform: rotate(.1turn)
+            我们可以用css动画来实现一个拼图从0变化到100%的动画，从而得到一个进度指示器
+            @keyframes spin {
+                to {
+                    transform:rotate(.5turn);
+                }
+            }
+            @keyfranmes bg {
+                50% { background: #655 }
+            }
+
+            .pie::before{
+                content: '';
+                display:block;
+                margin-left: 50%;
+                height: 100%;
+                border-radius: 0 100% 100% 0/ 50%;
+                background-color: inherit;
+                transform-origin: left;
+                animation: spin 3s linear infinite,
+                            bg 6s step-end infinite;
+            }
+
+            制作多个不同比率的静态拼图
+            <div class = "pie">20%</div>
+            <div class = "pie">60%</div>
+            以内联样式来实现       无法为伪元素设置内联样式
+            使用动画 动画必须处于暂停状态  用负的动画延时来直接跳至动画的任意时间点，并且定格在那里
+            负的animation-delay: 意味着动画会立即开始播放，但会自动前进到延时值的绝对值处，就好像动画在过去已经播放了指定的时间一样，因此实际效果就是动画跳过指定时间而从中间开始播放了。
+            因为动画是暂停的，动画的第一帧就是唯一显示出的那一帧，在拼图上显示出的比率就是我们的animation-delay值在总的动画持续时间中所占的比率
+            举例：如果动画持续时间是6s 我们只需要把animation-delay 设置为-1.2s 就能显示出20%的比率
+            问题：动画是作用在伪元素上的，但我们希望最终的内联样式可以设置在.pie元素上。
+            由于<div>上并没有任何动画效果，我们可以用内联样式的方式为其设置animation-delay属性，然后再伪元素上应用animation-delay: inherit 
+            综上，如果要让拼图显示20% 和 60% 结构代码：
+            <div class = " pie" style = "animation-delay: -20s"> </div>
+            <div class = " pie" style = "animation-delay: -60s"> </div>
+            css代码就会变成
+             @keyframes spin {
+                to {
+                    transform:rotate(.5turn);
+                }
+            }
+            @keyfranmes bg {
+                50% { background: #655 }
+            }
+
+            .pie::before{
+                其余样式代码保持原样
+                animation: spin 50s linear infinite,
+                            bg 100s step-end infinite;
+                            animation-play-state: paused;
+                            animation-delay: inherit;
+            }
+            此时可以再次优化结构，把拼图的比率写到元素的内容中，然后通过一段简单的脚步来把animation-delay写到内联样式中
+            $$('.pie').forEach(function(pie) {
+                var p = parseFloat(pie.textContent);
+                pie.style.animationDelay = '-' + p + 's';
+            });
+            此时原封不动的保留了文字 可以通过color:transparent来把文字隐藏，此时文字仍然是可以被选中和打印的，我们还可以进一步优化，把比率文字放置在拼图中心方便用户选中
+            实现： 把拼图的height换成line-height   通过绝对定位来完成对伪元素的尺寸和定位操作   增加text-align: center;来实现文字的垂直居中
+
+            最终代码：
+             .pie {
+                position: relative
+                width: 100px; 
+                line-height: 100px;
+                border-radius: 50%;
+                background: yellow;
+                background-image: linear-gradient(to right, transparent 50%, #655 0);
+                color: transparentl
+                text-align: center;
+            }
+
+               @keyframes spin {
+                to {
+                    transform:rotate(.5turn);
+                }
+            }
+            @keyfranmes bg {
+                50% { background: #655 }
+            }
+               .pie::before{
+                content: '';
+                position: absolute;
+                top: 0; left: 50%;
+                width: 50%; height: 100%;
+                border-radius: 0 100% 100% 0/ 50%;
+                background-color: inherit;
+                transform-origin: left;
+               animation: spin 50s linear infinite,
+                            bg 100s step-end infinite;
+                animation-play-state: paused;
+                 animation-delay: inherit;
+            }
+
+            SVG解决方案
+     -->
+</body>
+
+</html>

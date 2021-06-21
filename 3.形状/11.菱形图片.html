@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+        通过scale()变形样式来缩放图片时，默认是以中心点进行缩放的，通过width来放大图片，只会以它的左上角为原点进行缩放
+        菱形代码
+        .picture {
+            width: 400px;
+            transform: rotate(45deg);
+            overflow: hidden;
+        }
+
+        .picture > img {
+            max-width: 100%;
+            transform: rotate(-45deg) scale(1.42)
+        }
+        这个方法不够简洁，健壮
+
+        可以用clip-path属性
+        clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+        polygon() 多边形函数来指定一个菱形 实际上允许我们使用一系列（用逗号分隔的坐标点）来指定任意的多边形 可以使用百分比
+
+        clip-path 还可以参与动画，只要我们动画是在同一种形状函数之间进行的，而且点的数量是相同的。
+        图片在鼠标悬停时平滑的扩展为完整的面积
+        img {
+            clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+            transition: 1s clip-path;
+        }
+        img:hover {
+            polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+     -->
+</body>
+
+</html>

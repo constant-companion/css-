@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+        通过shew()的变形属性来对矩形进行斜向拉伸  transform: skewX(-45deg)
+        会导致它的内容也发生斜向变形
+
+        1.嵌套元素方案 用一个div包裹内容，对内容进行一次反向的skew()变形
+        缺点：添加了额外的html元素
+
+        2.伪元素方案 把所有样式（背景，边框等）应用到伪元素上，然后再对伪元素变形  因为内容并不是包含在伪元素里的，所以不会影响内容
+        我们希望伪元素保持良好的灵活性，可以自动继承其宿主元素的尺寸  可以给宿主元素应用position: relative样式 并给伪元素设置
+        position: absolute 然后再把所有的偏移量设置为0 以便让它在水平和垂直方向都被拉伸至宿主元素
+        .button {
+            position: relative
+        }
+        .button::before {
+            content: "";
+            position: absolute;
+            top: 0; right: 0 ; bottom: 0; left: 0;
+        }
+        此时，用伪元素设置的方块是重叠在内容之上的，给它设置背景会遮住内容，可以给伪元素添加 Z-index: -1样式
+        最终代码 
+        .button {
+            position: relative
+        }
+        .button::before {
+            content: "";
+            position: absolute;
+            top: 0; right: 0 ; bottom: 0; left: 0;
+            z-index: -1;
+            transform: skew(45deg);
+        }
+        这个技巧不仅适用于skew（）变形，还适用于其他任何样式 当想变形一个元素而不像变形它的内容时就可以使用
+
+        把这个技巧针对rotato（）变形样式稍微调整一下，再用到一个正方形元素上，就很容易得到一个菱形
+     -->
+</body>
+
+</html>
